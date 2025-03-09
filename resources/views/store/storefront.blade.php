@@ -19,7 +19,11 @@
                 <td class="align-middle">{{ $product->name }}</td>
                 <td class="align-middle">{{ $product->price }} €</td>
                 <td class="align-middle">{{ $product->stock }}</td>
-                <td class="align-middle"><img src="{{ asset('storage/' . $product->image) }}" alt="Imagen" width="100" class="img-thumbnail"></td>
+                <td class="align-middle">
+                    <a href="{{ route('products.show', $product->id) }}">
+                        <img src="{{ asset('storage/' . $product->image) }}" alt="Imagen" width="100" class="img-thumbnail">
+                    </a>
+                </td>
                 <td class="align-middle">
                     @auth
                     <form action="{{ route('cart.add', $product->id) }}" method="POST" style="display: inline;">

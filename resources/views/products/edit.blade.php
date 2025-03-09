@@ -19,6 +19,7 @@
                 <textarea name="description" id="" class="form-control">{{ $product->description }}</textarea>
             </div>
             <button type="submit" class="btn btn-success">Actualizar</button>
+            
         </form>
     </div>
 @endsection

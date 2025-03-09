@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h2>Mi Carrito</h2>
+    <h1 class="text-center my-5">Mi Carrito</h1>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
