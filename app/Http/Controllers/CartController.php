@@ -56,33 +56,37 @@ class CartController extends Controller
     return redirect()->route('cart.index')->with('success', 'Cantidad actualizada.');
 }
 
-   public function addToCart(Product $product)
+// En CartController.php
+public function addToCart(Product $product)
 {
-    if ($product->stock > 0) {
-        // Buscar si el producto ya está en el carrito
-        $cartItem = Cart::where('user_id', auth()->id())
-                        ->where('product_id', $product->id)
-                        ->first();
-
-        // Si ya existe, incrementar la cantidad; si no, crear una nueva entrada
-        if ($cartItem) {
-            $cartItem->increment('quantity');
-        } else {
-            Cart::create([
-                'user_id' => auth()->id(),
-                'product_id' => $product->id,
-                'quantity' => 1,
-            ]);
-        }
-
-        // Reducir stock del producto
-        $product->decrement('stock');
-
-        return redirect()->route('storefront')->with('success', 'Producto añadido al carrito.');
+    if (auth()->user()->role === 'admin') {
+        // Redirigir a la página de productos si es un administrador
+        return redirect()->route('products.index')->with('error', 'Los administradores no pueden comprar.');
     }
 
-    return redirect()->route('storefront')->with('error', 'Stock insuficiente.');
+   if($product->stock > 0) {
+    $cartItem = Cart::where('user_id', auth()->id())->where('product_id', $product->id)->first();
+
+    if($cartItem) {
+        $cartItem->increment('quantity');
+        $product->decrement('stock');
+    }else{
+        Cart::create([
+            'user_id' => auth()->id(),
+            'product_id' => $product->id,
+            'quantity' => 1,
+        ]);
+
+        $product->decrement('stock');
+
+        return redirect()->route('storefront')->with('success', 'Producto añadido al carrito');
+    }
+    return redirect() ->route('storefront')->with('error', 'Stock insuficiente');
+   }
+
 }
+
+
 
 // App\Http\Controllers\CartController.php
 

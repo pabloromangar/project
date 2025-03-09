@@ -86,5 +86,22 @@ class ProductController extends Controller
     return view('storefront', compact('products'));
 }
 
+public function addStock(Request $request, $id)
+{
+    $request->validate([
+        'quantity' => 'required|integer|min:1', // Validar que la cantidad sea un entero mayor que 0
+    ]);
+
+    $product = Product::find($id);
+    if (!$product) {
+        return redirect()->route('products.index')->with('error', 'Producto no encontrado.');
+    }
+
+    // Aumentar el stock
+    $product->stock += $request->quantity;
+    $product->save();
+
+    return redirect()->route('products.index')->with('success', 'Stock actualizado correctamente.');
+}
 
 }
