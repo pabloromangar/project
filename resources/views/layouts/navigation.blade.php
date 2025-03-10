@@ -12,14 +12,17 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('storefront')" :active="request()->routeIs('dashboard')">
-                        Shop
-                    </x-nav-link>
+                    
                     @auth
                     @if (auth()->user()->role === 'admin')
                     <x-nav-link :href="route('products.index')" :active="request()->routeIs('dashboard')">
                         Admin
-                    </x-nav-link>                    @endif
+                    </x-nav-link>
+                    @else
+                    <x-nav-link :href="route('storefront')" :active="request()->routeIs('dashboard')">
+                        Shop
+                    </x-nav-link>
+                    @endif
                     @endauth
                 </div>
             </div>
