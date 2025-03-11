@@ -12,9 +12,9 @@ class StorefrontController extends Controller
     public function index()
     {
         if (!Auth::check()) {
-            return redirect()->route('home'); // Redirigir si el usuario no está autenticado
+            return redirect()->route('home'); 
         }    
-        $products = Product::all(); // Obtener todos los productos
+        $products = Product::all();
         return view('store.storefront', compact('products'));
     }
 }

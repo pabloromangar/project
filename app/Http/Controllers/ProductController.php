@@ -24,12 +24,12 @@ class ProductController extends Controller
             'name' => 'required',
             'price' => 'required|numeric',
             'description' => 'required|string',
-            'stock' => 'required|integer|min:0', // Validar stock como entero no negativo
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Validar imagen (opcional)
+            'stock' => 'required|integer|min:0',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         //Manejar si se ha enviado una foto
-            $imagePath = $request->file('image')->store('products', 'public'); // Guardar imagen en el disco público
+            $imagePath = $request->file('image')->store('products', 'public'); 
 
         Product::create([
             'name' => $request->name,
@@ -60,7 +60,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required',
             'price' => 'required|numeric',
-            'description' => 'required|string', // Añade validación para la descripción si es opcional
+            'description' => 'required|string',
         ]);
 
 
@@ -89,7 +89,7 @@ class ProductController extends Controller
 public function addStock(Request $request, $id)
 {
     $request->validate([
-        'quantity' => 'required|integer|min:1', // Validar que la cantidad sea un entero mayor que 0
+        'quantity' => 'required|integer|min:1',
     ]);
 
     $product = Product::find($id);

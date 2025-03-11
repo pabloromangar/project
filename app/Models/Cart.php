@@ -17,7 +17,7 @@ class Cart extends Model
         return $this->belongsTo(Product::class);
     }
 
-    // Definir la relación con el modelo User (si tienes un modelo de User)
+    // Definir la relación con el modelo User
     public function user()
     {
         return $this->belongsTo(User::class);

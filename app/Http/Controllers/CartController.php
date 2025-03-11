@@ -10,7 +10,7 @@ class CartController extends Controller
 {
     public function index()
     {
-        $cartItems = Cart::where('user_id', auth()->id())->get(); // Obtener artículos del carrito para el usuario
+        $cartItems = Cart::where('user_id', auth()->id())->get(); 
         return view('cart.index', compact('cartItems'));
     }
 
@@ -28,11 +28,9 @@ class CartController extends Controller
 
     public function destroy(Cart $cart)
 {
-    // Reponer el stock del producto
     $product = $cart->product;
     $product->increment('stock', $cart->quantity);
     
-    // Eliminar el artículo del carrito
     $cart->delete();
 
     return redirect()->route('cart.index')->with('success', 'Producto eliminado del carrito.');
@@ -41,7 +39,6 @@ class CartController extends Controller
 
     public function update(Request $request, Cart $cart)
 {
-    // Validar que la cantidad no supere el stock disponible
     $request->validate([
         'quantity' => 'required|integer|min:1',
     ]);
@@ -50,17 +47,14 @@ class CartController extends Controller
         return redirect()->route('cart.index')->with('error', 'Stock insuficiente para actualizar la cantidad.');
     }
 
-    // Actualizar la cantidad del carrito
     $cart->update(['quantity' => $request->quantity]);
 
     return redirect()->route('cart.index')->with('success', 'Cantidad actualizada.');
 }
 
-// En CartController.php
 public function addToCart(Product $product)
 {
     if (auth()->user()->role === 'admin') {
-        // Redirigir a la página de productos si es un administrador
         return redirect()->route('products.index')->with('error', 'Los administradores no pueden comprar.');
     }
 
@@ -86,15 +80,10 @@ public function addToCart(Product $product)
 
 }
 
-
-
-// App\Http\Controllers\CartController.php
-
 public function checkout()
 {
     $cartItems = Cart::where('user_id', auth()->id())->get();
 
-    // Generar la factura en un archivo de texto
     $invoiceData = "Factura\n\n";
     $total = 0;
 
